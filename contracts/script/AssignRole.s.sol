@@ -15,7 +15,7 @@ contract AssignRoleScript is Script {
 
         contractAddress = 0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512; // Deployed SFLuv
         roleToGrant = keccak256("MINTER"); // Define your role
-        accountToGrant = 0x70997970C51812dc3A010C7d01b50e0d17dc79C8; // Anvil account 1
+        accountToGrant = 0x6F8622eA38398C2A6579aBCD278897101aDc7bCd; // Anvil account 1
 
         SFLUVv1 con = SFLUVv1(contractAddress);
         // Ensure the caller has the required role to grant roles
