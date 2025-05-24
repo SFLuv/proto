@@ -8,14 +8,12 @@ import "../src/SFLUVv1.sol";
 contract AssignRoleScript is Script {
     address public contractAddress;
     bytes32 public roleToGrant;
-    address public accountToGrant;
 
-    function run() public {
+    function run(address accountToGrant) public {
         vm.startBroadcast();
 
         contractAddress = 0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512; // Deployed SFLuv
         roleToGrant = keccak256("MINTER"); // Define your role
-        accountToGrant = 0x6F8622eA38398C2A6579aBCD278897101aDc7bCd; // Anvil account 1
 
         SFLUVv1 con = SFLUVv1(contractAddress);
         // Ensure the caller has the required role to grant roles
