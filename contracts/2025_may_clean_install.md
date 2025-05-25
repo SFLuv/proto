@@ -62,6 +62,9 @@ Paid: 0.001397561001397561 ETH (1397561 gas * 1.000000001 gwei)
 Mock coin was deployed at 0x5FbDB2315678afecb367f032d93F642f64180aa3
 Test SFLuv was deployed at 0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512
 
+export SFLUV_CONTRACT=0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512
+export MOCK_CONTRACT=0x5FbDB2315678afecb367f032d93F642f64180aa3
+
 # Assign Minter role to SFLuv Wallet
 
 `forge script script/AssignRole.s.sol --broadcast --fork-url http://localhost:8545 --private-key $SFLUV_CONTRACT_PKEY --sig "run(address)" $SFLUV_WALLET`
@@ -79,6 +82,33 @@ Test SFLuv was deployed at 0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512
 `cast send --value 1ether --private-key $FAUCET_ACCOUNT_PKEY $SFLUV_WALLET`
 `cast balance $SFLUV_WALLET`
 
-# Mint SFLuv to SFLuv Wallet
+# Mint SFLuv to Volunteer Wallet
 
 `forge script script/MintLuv.s.sol --broadcast --fork-url http://localhost:8545 --private-key $SFLUV_WALLET_PKEY --sig "run(address,uint256)" $VOLUNTEER_WALLET 1000000`
+
+# Get balances of Volunteer wallet
+
+`cast call $SFLUV_CONTRACT   "balanceOf(address)" $VOLUNTEER_WALLET`
+
+Should be 0x00000000000000000000000000000000000000000000000000000000000f4240
+
+`cast call $MOCK_CONTRACT   "balanceOf(address)" $VOLUNTEER_WALLET`
+
+Should be 0x0000000000000000000000000000000000000000000000000000000000000000
+
+# Unwrap
+
+Need ETH for the transaction:
+
+`cast send --value 1ether --private-key $FAUCET_ACCOUNT_PKEY $VOLUNTEER_WALLET`
+
+`cast send --private-key $VOLUNTEER_WALLET_PKEY $SFLUV_CONTRACT "withdrawTo(address,uint256)" $VOLUNTEER_WALLET 10000`
+
+Should now have a balance of Mock coin:
+
+```
+contracts $ cast call $SFLUV_CONTRACT   "balanceOf(address)" $VOLUNTEER_WALLET
+0x00000000000000000000000000000000000000000000000000000000000f1b30
+contracts $ cast call $MOCK_CONTRACT   "balanceOf(address)" $VOLUNTEER_WALLET
+0x0000000000000000000000000000000000000000000000000000000000002710
+```
