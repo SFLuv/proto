@@ -74,10 +74,10 @@ Test SFLuv was deployed at 0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512
 
 `cast call 0x5FbDB2315678afecb367f032d93F642f64180aa3 "balanceOf(address)" $SFLUV_WALLET`
 
-# Send ETH from Faucet account
+# Send ETH from Faucet account - needed to pay gas for minting
 
-`cast send --private-key $FAUCET_ACCOUNT_PKEY 0xD76b5c2A23ef78368d8E34288B5b65D616B746aE "deposit(address,uint256)" $SFLUV_WALLET 1ether`
-`cast call 0xD76b5c2A23ef78368d8E34288B5b65D616B746aE "balanceOf(address)" $SFLUV_WALLET`
+`cast send --value 1ether --private-key $FAUCET_ACCOUNT_PKEY $SFLUV_WALLET`
+`cast balance $SFLUV_WALLET`
 
 # Mint SFLuv to SFLuv Wallet
 
