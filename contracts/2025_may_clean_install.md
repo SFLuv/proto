@@ -27,6 +27,7 @@ Note that when Anvil is started it will print 10 "Available Accounts" and "Priva
 
 ## You Need Multiple Keypairs
 
+```
 export FAUCET_ACCOUNT=0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
 export FAUCET_ACCOUNT_PKEY=0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
 
@@ -37,6 +38,7 @@ export SFLUV_WALLET_PKEY=0xd1b9ce652a31151f22c1f0900a01f13340cd375da1a98d2729261
 
 export VOLUNTEER_WALLET=0x4c783440D63c7943D31Eab63e4381fFBb7E71942
 export VOLUNTEER_WALLET_PKEY=0x2413056454e962339d235f2a89ec9939fe75dfb08a10c6c57e81890ca5103d81
+```
 
 ## Deploy SFLuv and Mock coins
 
@@ -59,11 +61,15 @@ Block: 1
 Paid: 0.001397561001397561 ETH (1397561 gas * 1.000000001 gwei)
 ```
 
+Take note of these values:
+
+```
 Mock coin was deployed at 0x5FbDB2315678afecb367f032d93F642f64180aa3
 Test SFLuv was deployed at 0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512
 
 export SFLUV_CONTRACT=0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512
 export MOCK_CONTRACT=0x5FbDB2315678afecb367f032d93F642f64180aa3
+```
 
 # Assign Minter role to SFLuv Wallet
 
@@ -79,8 +85,10 @@ export MOCK_CONTRACT=0x5FbDB2315678afecb367f032d93F642f64180aa3
 
 # Send ETH from Faucet account - needed to pay gas for minting
 
-`cast send --value 1ether --private-key $FAUCET_ACCOUNT_PKEY $SFLUV_WALLET`
-`cast balance $SFLUV_WALLET`
+```
+cast send --value 1ether --private-key $FAUCET_ACCOUNT_PKEY $SFLUV_WALLET
+cast balance $SFLUV_WALLET
+```
 
 # Mint SFLuv to Volunteer Wallet
 
@@ -100,9 +108,11 @@ Should be 0x0000000000000000000000000000000000000000000000000000000000000000
 
 Need ETH for the transaction:
 
-`cast send --value 1ether --private-key $FAUCET_ACCOUNT_PKEY $VOLUNTEER_WALLET`
+```
+cast send --value 1ether --private-key $FAUCET_ACCOUNT_PKEY $VOLUNTEER_WALLET`
 
-`cast send --private-key $VOLUNTEER_WALLET_PKEY $SFLUV_CONTRACT "withdrawTo(address,uint256)" $VOLUNTEER_WALLET 10000`
+cast send --private-key $VOLUNTEER_WALLET_PKEY $SFLUV_CONTRACT "withdrawTo(address,uint256)" $VOLUNTEER_WALLET 10000
+```
 
 Should now have a balance of Mock coin:
 
