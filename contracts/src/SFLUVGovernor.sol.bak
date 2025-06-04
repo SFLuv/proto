@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity <=0.8.19;
+pragma solidity ^0.8.20;
 
 import "../lib/openzeppelin-contracts/contracts/governance/Governor.sol";
 import "../lib/openzeppelin-contracts/contracts/governance/extensions/GovernorSettings.sol";
@@ -8,7 +8,7 @@ import "../lib/openzeppelin-contracts/contracts/governance/extensions/GovernorVo
 import "../lib/openzeppelin-contracts/contracts/governance/extensions/GovernorVotesQuorumFraction.sol";
 import "../lib/openzeppelin-contracts/contracts/governance/extensions/GovernorTimelockControl.sol";
 import "../lib/openzeppelin-contracts/contracts/token/ERC721/extensions/ERC721Votes.sol";
-import "../lib/openzeppelin-contracts/contracts/access/AccessControlDefaultAdminRules.sol";
+import "../lib/openzeppelin-contracts/contracts/access/extensions/AccessControlDefaultAdminRules.sol";
 import "./SFLUVVotes.sol";
 
 /// @custom:security-contact security@sfluv.org

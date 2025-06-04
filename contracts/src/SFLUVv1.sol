@@ -1,8 +1,8 @@
-pragma solidity <=0.8.19;
+pragma solidity ^0.8.20;
 
 import "../lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Wrapper.sol";
-import "../lib/openzeppelin-contracts/contracts/token/ERC20/extensions/draft-ERC20Permit.sol";
-import "../lib/openzeppelin-contracts/contracts/access/AccessControlDefaultAdminRules.sol";
+import "../lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Permit.sol";
+import "../lib/openzeppelin-contracts/contracts/access/extensions/AccessControlDefaultAdminRules.sol";
 
 contract SFLUVv1 is ERC20Wrapper, ERC20Permit, AccessControlDefaultAdminRules {
 

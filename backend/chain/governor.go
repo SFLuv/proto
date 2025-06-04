@@ -22,11 +22,11 @@ func deployGovernance(rpcUrl, skHex string) (votesAddr, govAddr ethgo.Address, e
 
 	k := &EcdsaKey{SK: sk}
 
-	if _, votesAddr, err = deployContract(ec, "SFLUVVotes.sol/SFLUVVotesV1", k, nil); err != nil {
+	if _, votesAddr, err = deployContract(ec, "SFLUVVotes.sol.bak/SFLUVVotesV1", k, nil); err != nil {
 		return
 	}
 
-	if _, govAddr, err = deployContract(ec, "SFLUVGovernor.sol/SFLUVGovernorV0", k, []interface{}{votesAddr}); err != nil {
+	if _, govAddr, err = deployContract(ec, "SFLUVGovernor.sol.bak/SFLUVGovernorV0", k, []interface{}{votesAddr}); err != nil {
 		return
 	}
 
@@ -54,11 +54,11 @@ func makeGovHelper(rpcUrl, skHex string, govAddr, votesAddr ethgo.Address) (gh *
 
 	gh = &govHelper{k: &EcdsaKey{SK: sk}}
 
-	if gh.gov, err = LoadContract(ec, "SFLUVGovernor.sol/SFLUVGovernorV0", gh.k, govAddr); err != nil {
+	if gh.gov, err = LoadContract(ec, "SFLUVGovernor.sol.bak/SFLUVGovernorV0", gh.k, govAddr); err != nil {
 		return
 	}
 
-	if gh.votes, err = LoadContract(ec, "SFLUVVotes.sol/SFLUVVotesV1", gh.k, votesAddr); err != nil {
+	if gh.votes, err = LoadContract(ec, "SFLUVVotes.sol.bak/SFLUVVotesV1", gh.k, votesAddr); err != nil {
 		return
 	}
 

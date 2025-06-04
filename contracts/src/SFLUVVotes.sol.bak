@@ -1,14 +1,14 @@
 // SPDX-License-Identifier: MIT
-pragma solidity <=0.8.19;
+pragma solidity ^0.8.20;
 
 import "../lib/openzeppelin-contracts/contracts/token/ERC721/extensions/ERC721Votes.sol";
-import "../lib/openzeppelin-contracts/contracts/access/AccessControlDefaultAdminRules.sol";
+import "../lib/openzeppelin-contracts/contracts/access/extensions/AccessControlDefaultAdminRules.sol";
 
 contract SFLUVVotesV1 is ERC721Votes, AccessControlDefaultAdminRules {
     uint48 constant private initialDelay = 60 * 60 * 24 * 7; // 7 days?
     constructor()
     ERC721("SFLUVVotes V1.0", "SFLUVVotes")
-    EIP712("SFLUVVotes", "0.0.1")
+    // EIP712("SFLUVVotes", "0.0.1")
     AccessControlDefaultAdminRules(initialDelay, msg.sender) {}
 
     bytes32 public constant MINTER_ROLE = keccak256("MINTER");

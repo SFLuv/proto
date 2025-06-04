@@ -1,22 +1,32 @@
-pragma solidity <=0.8.19;
+pragma solidity ^0.8.26;
 
-import "@openzeppelin-upgradeable/contracts/access/extensions/AccessControlDefaultAdminRulesUpgradeable.sol";
-import "@openzeppelin-upgradeable/contracts/token/ERC20/extensions/ERC20WrapperUpgradeable.sol";
+import { ISFLUVErrors } from "./ISFLUVErrors.sol";
+import "../lib/openzeppelin-contracts-upgradeable/contracts/access/AccessControlUpgradeable.sol";
+import "../lib/openzeppelin-contracts-upgradeable/contracts/token/ERC20/extensions/ERC20WrapperUpgradeable.sol";
+import {UUPSUpgradeable} from "../lib/openzeppelin-contracts-upgradeable/contracts/proxy/utils/UUPSUpgradeable.sol";
 
-contract SFLUVv2 is ERC20WrapperUpgradeable, AccessControlDefaultAdminRulesUpgradeable {
+contract SFLUVv2 is ERC20WrapperUpgradeable, AccessControlUpgradeable, UUPSUpgradeable, ISFLUVErrors {
 
-    uint48 constant private initialDelay = 60 * 60 * 24 * 7; // 7 days?
+    /// @custom:oz-upgrades-unsafe-allow constructor
+    constructor() {
+        _disableInitializers();
+    }
 
-    constructor(IERC20 underlyingToken)
-        ERC20WrapperUpgradeable(underlyingToken)
-        ERC20Upgradeable("SFLUV V2.0", "SFLUV")
-        AccessControlDefaultAdminRulesUpgradeable(initialDelay, msg.sender) {}
+    function initialize(address _governance, IERC20 _underlyingToken) initializer public {
+        __AccessControl_init();
+        __UUPSUpgradeable_init();
 
-//    function decimals() public pure override(ERC20, ERC20Wrapper) returns (uint8) {
-//        return 6; // could get this dynamically from the underlying token, but the current target only is USDC so...
-//    }
+        __ERC20Wrapper_init(_underlyingToken);
+        __ERC20_init("SFLUV V2.0", "SFLUV");
 
-    // this role allows the holder to mint (wrap) underlying USDC into SFLUV
+        // Check for zero addresses.
+        if (_governance == address(0)) revert ZeroAddress();
+        _grantRole(DEFAULT_ADMIN_ROLE, _governance);
+    }
+
+    function _authorizeUpgrade(address) internal override onlyRole(DEFAULT_ADMIN_ROLE) { }
+
+    // this role allows the holder to mint (wrap) underlying token (HONEY) into SFLUV
     bytes32 public constant MINTER_ROLE = keccak256("MINTER");
 
     function depositFor(address account, uint256 amount) public override returns (bool) {
@@ -24,4 +34,11 @@ contract SFLUVv2 is ERC20WrapperUpgradeable, AccessControlDefaultAdminRulesUpgra
         return ERC20WrapperUpgradeable.depositFor(account, amount);
     }
 
+    // this role allows the holder to redeem (unwrap) SFLUV to the underlying token (HONEY)
+    bytes32 public constant REDEEMER_ROLE = keccak256("REDEEMER");
+
+    function withdrawTo(address account, uint256 amount) public override returns (bool) {
+        require(hasRole(REDEEMER_ROLE, _msgSender()));
+        return ERC20WrapperUpgradeable.withdrawTo(account, amount);
+    }
 }
